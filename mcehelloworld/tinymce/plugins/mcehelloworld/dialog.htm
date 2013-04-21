@@ -1,0 +1,72 @@
+<p>
+   <label for="name">Name</label>
+   <input type="text" id="name">
+</p>
+<p>
+   <label for="width">Width</label>
+   <input type="text" id="width" value="100">
+</p>
+<p>
+   <label for="height">Height</label>
+   <input type="text" id="height" value="100">
+</p>
+<p>
+   <button id="insert">Insert</button>
+</p>
+
+<script type="text/javascript">
+// shortcut
+function $( id ) {
+   return document.getElementById( id );
+}
+
+// helper: get query string params as hash
+function getQueryParams( url ) {
+   url         = url || location.href;
+   var arr     = url.split('?');
+   arr.shift();   // remove the part before the '?'
+   var query   = arr.join('?');  // there might be regular '?' characters in the params
+   
+   if ( ! query ) {
+      return {};
+   }
+   
+   var pairs   = query.split('&');  
+   var params  = {};
+   
+   for ( var i=0, l=pairs.length; i<l; i += 1 ) {
+      // split the name from the value
+      var pair = pairs[i].split('=');
+      params[ pair.shift() ] = pair.join('=');
+   }
+   
+   return params;
+}
+
+// populate fields
+var params = getQueryParams();
+for ( var name in params ) {
+   var field = $( name );
+   if ( field ) {
+      field.value = params[ name ];
+   }
+}
+
+// get value from all fields
+function getData() {
+   var data = {};
+   for ( var name in params ) {
+      var field = $( name );
+      if ( field ) {
+         data[ name ] = field.value;
+      }
+   }
+   return data;
+}
+
+// handle insert button
+$('insert').addEventListener('click', function () {
+   // call the insert fn in the parent window
+   parent[ params.callback ]( window, JSON.stringify( getData() ) );
+});
+</script>

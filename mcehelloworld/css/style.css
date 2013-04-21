@@ -1,0 +1,14 @@
+.mcehelloworld-wrapper {
+   display: inline-block;
+}
+
+.mcehelloworld-wrapper > span {
+   display: table;
+   outline: 1px solid black;
+}
+
+.mcehelloworld-wrapper > span > span {
+   display: table-cell;
+   vertical-align: middle;
+   text-align: center;
+}
